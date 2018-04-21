@@ -1,2 +1,3 @@
-# square-binary-markers-generator
-Square-binary Markers generator
+# Square-binary Markers generator
+
+Tiny tool to create square binary markers to works with computer vision libraries like BoofCV.
