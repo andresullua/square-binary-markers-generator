@@ -8,16 +8,36 @@
     <meta name="keywords" content="Square-Binary Markers,Fiducials,Computer Vision,JavaScript">
     <meta name="author" content="Andrés Ullúa">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/style.css">
   </head>
 
   <body>
+
+    <form id="form">
+      <label for="square">Square Size</label>
+      <select id="square" name="square">
+        <option value="3">3</option>
+        <option value="4">4</option>
+      </select>
+      <label for="border">Border Size</label>
+      <select id="border" name="border">
+        <option value="1">1</option>
+        <option value="2">2</option>
+      </select>
+      <label for="amount">Number of Markers</label>
+      <select id="amount" name="amount">
+      </select>
+      <br>
+      <input type="submit" name="" value="Generate">
+    </form>
+
     <div id="markers">
 
     </div>
   </body>
+  
   <script src="js/script.js"></script>
 
 </html>

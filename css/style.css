@@ -1,3 +1,7 @@
+body{
+  padding:20px;
+}
+
 .marker {
   display: inline-block;
   margin: 20px
