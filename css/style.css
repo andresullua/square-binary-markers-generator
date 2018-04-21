@@ -1,0 +1,20 @@
+.marker {
+  display: inline-block;
+  margin: 20px
+}
+
+.row {
+  display: inline-grid;
+}
+
+.box {
+  width: 40px;
+  height: 40px;
+  background: white;
+}
+
+.box.border,
+.box.orientation,
+.box.message {
+  background: black;
+}
