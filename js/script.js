@@ -28,6 +28,7 @@ var markers = {
   generateHTML: function() {
 
     var html = '';
+    var markers_counter = 0;
     for (var b = 0; b < this.amount; b++) {
       //reverse binary for counter
       var current_binary = this.binaries[b].split("").reverse().join("");
@@ -69,6 +70,15 @@ var markers = {
       html += '<label for="marker-' + b + '">' + b + '</label>';
       html += '</div>';
       //end marker
+
+      //page break
+      if (markers_counter < 11) {
+        markers_counter++;
+      } else {
+        html += '<div class="html2pdf__page-break"></div>';
+        markers_counter = 0;
+      }
+
     }
     return html;
   }
@@ -79,6 +89,7 @@ function onSubmit(e) {
 
   var html = markers.generateHTML();
   document.getElementById('markers').innerHTML = html;
+  $download.type = "button";
   return false;
 }
 
@@ -103,16 +114,40 @@ function onNumberChange(e) {
   markers.amount = parseInt($amount.value);
 }
 
+function onDownload(e) {
+  var element = document.getElementById('markers');
+  html2pdf(element, {
+    margin: 0,
+    filename: 'markers-' + new Date().valueOf() + '.pdf',
+    image: {
+      type: 'jpeg',
+      quality: 1
+    },
+    html2canvas: {
+      dpi: 300,
+      letterRendering: true
+    },
+    jsPDF: {
+      unit: 'cm',
+      format: 'a4',
+      orientation: 'portrait'
+    }
+  });
+}
+
+
 var $form;
 var $grid;
 var $border;
 var $amount;
+var $download;
 
 (function() {
   $form = document.getElementById('form');
   $grid = document.getElementById('grid');
   $border = document.getElementById('border');
   $amount = document.getElementById('amount');
+  $download = document.getElementById('download');
 
   if ($form.attachEvent) {
     $form.attachEvent("submit", onSubmit);
@@ -123,5 +158,6 @@ var $amount;
   $border.onchange = onSelectChange;
   $amount.onchange = onNumberChange;
   $border.onchange = onSelectChange;
+  $download.onclick = onDownload;
   onSelectChange();
 })();

@@ -16,8 +16,8 @@
   <body>
 
     <form id="form">
-      <label for="square">Square Size</label>
-      <select id="square" name="square">
+      <label for="grid">Grid Size</label>
+      <select id="grid" name="grid">
         <option value="3">3</option>
         <option value="4">4</option>
       </select>
@@ -27,17 +27,17 @@
         <option value="2">2</option>
       </select>
       <label for="amount">Number of Markers</label>
-      <select id="amount" name="amount">
-      </select>
+      <select id="amount" name="amount"></select>
+      <br>
       <br>
       <input type="submit" name="" value="Generate">
+      <input type="hidden" id="download" name="download" value="Download PDF">
     </form>
+    <div id="markers"></div>
 
-    <div id="markers">
-
-    </div>
   </body>
-  
+
+  <script src="js/html2pdf.bundle.min.js"></script>
   <script src="js/script.js"></script>
 
 </html>
