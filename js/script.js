@@ -1,10 +1,12 @@
 var markers = {
-  square_size: 3,
+  grid_size: 3,
   border_size: 1,
   orientation_boxes: 4,
+  mm: 10,
+  margin: 5,
   setValues: function() {
-    this.total_square_size = this.square_size + this.border_size * 2;
-    this.boxes = this.square_size * this.square_size - this.orientation_boxes;
+    this.total_grid_size = this.grid_size + this.border_size * 2;
+    this.boxes = this.grid_size * this.grid_size - this.orientation_boxes;
     this.total = Math.pow(2, this.boxes);
     this.binaries = this.getBinaries();
     this.amount = this.total;
@@ -28,42 +30,45 @@ var markers = {
     var html = '';
     for (var b = 0; b < this.amount; b++) {
       //reverse binary for counter
-      var counter = 0;
       var current_binary = this.binaries[b].split("").reverse().join("");
-
-      html += '<div class="marker">';
-      for (var i = 0; i < this.total_square_size; i++) {
-        for (var j = 0; j < this.total_square_size; j++) {
+      var counter = 0;
+      //start marker
+      html += '<div  id="marker-' + b + '" class="marker">';
+      for (var i = 0; i < this.total_grid_size; i++) {
+        for (var j = 0; j < this.total_grid_size; j++) {
           if (j == 0) {
             html += '<div class="row">';
           }
-          if (i < this.border_size || j < this.border_size || i >= this.total_square_size - this.border_size || j >= this.total_square_size - this.border_size) {
+          if (i < this.border_size || j < this.border_size || i >= this.total_grid_size - this.border_size || j >= this.total_grid_size - this.border_size) {
             //border
             html += '<span class="box border"></span>';
           } else {
-            if ((i <= this.border_size && j <= this.border_size) || (i <= this.border_size && j >= this.total_square_size - this.border_size) || (i >= this.total_square_size - this.border_size && j <= this.border_size) || (i >= this.total_square_size - this.border_size && j >= this.total_square_size - this.border_size)) {
+            if ((i == this.border_size || i == this.grid_size + this.border_size - 1) &&
+              (j == this.border_size || j == this.grid_size + this.border_size - 1)) {
               //orientation
               if (i == this.border_size && j == i) {
-                html += '<span class="box orientation"></span>';
+                html += '<span class="box orientation black"></span>';
               } else {
                 html += '<span class="box orientation"></span>';
               }
             } else {
               //message
               if (current_binary[counter] == '1') {
-                html += '<span class="box message"></span>';
+                html += '<span class="box message black"></span>';
               } else {
-                html += '<span class="box"></span>';
+                html += '<span class="box message"></span>';
               }
               counter++;
             }
           }
-          if (j == this.total_square_size - 1) {
+          if (j == this.total_grid_size - 1) {
             html += '</div>';
           }
         }
       }
+      html += '<label for="marker-' + b + '">' + b + '</label>';
       html += '</div>';
+      //end marker
     }
     return html;
   }
@@ -74,12 +79,11 @@ function onSubmit(e) {
 
   var html = markers.generateHTML();
   document.getElementById('markers').innerHTML = html;
-
   return false;
 }
 
-function onSelectChange() {
-  markers.square_size = parseInt($square.value);
+function onSelectChange(e) {
+  markers.grid_size = parseInt($grid.value);
   markers.border_size = parseInt($border.value);
   markers.setValues();
   var value = $amount.value ? parseInt($amount.value) : 1;
@@ -95,18 +99,18 @@ function onSelectChange() {
   $amount.onchange();
 }
 
-function onNumberChange() {
+function onNumberChange(e) {
   markers.amount = parseInt($amount.value);
 }
 
 var $form;
-var $square;
+var $grid;
 var $border;
 var $amount;
 
 (function() {
   $form = document.getElementById('form');
-  $square = document.getElementById('square');
+  $grid = document.getElementById('grid');
   $border = document.getElementById('border');
   $amount = document.getElementById('amount');
 
@@ -115,8 +119,9 @@ var $amount;
   } else {
     $form.addEventListener("submit", onSubmit);
   }
-  $square.onchange = onSelectChange;
+  $grid.onchange = onSelectChange;
   $border.onchange = onSelectChange;
   $amount.onchange = onNumberChange;
+  $border.onchange = onSelectChange;
   onSelectChange();
 })();

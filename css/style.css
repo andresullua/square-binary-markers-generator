@@ -1,24 +1,35 @@
-body{
-  padding:20px;
+body {
+  padding: 20px;
 }
 
 .marker {
   display: inline-block;
-  margin: 20px
+  margin: 15px
 }
 
-.row {
+.marker label {
+  line-height: 15px;
+  font-size: 10px;
+  font-family: monospace;
+  display: block;
+  text-align: right;
+}
+
+.marker .row {
   display: inline-grid;
 }
 
-.box {
-  width: 40px;
-  height: 40px;
+.marker .box {
+  width: 37px;
+  height: 37px;
   background: white;
 }
 
-.box.border,
-.box.orientation,
-.box.message {
+.marker .box.border,
+.marker .box.black {
   background: black;
+}
+
+.html2pdf__page-break{
+  display: none;
 }
