@@ -1,17 +1,18 @@
 var markers = {
-  grid_size: 3,
-  border_size: 1,
+  grid_size: 4,
+  border_size: 2,
   orientation_boxes: 4,
-  mm: 10,
   margin: 5,
+  size: 30,
   setValues: function() {
     this.total_grid_size = this.grid_size + this.border_size * 2;
     this.boxes = this.grid_size * this.grid_size - this.orientation_boxes;
     this.total = Math.pow(2, this.boxes);
-    this.binaries = this.getBinaries();
+    this.markers = this.getMarkers();
     this.amount = this.total;
+    this.box_size = this.size/this.total_grid_size;
   },
-  getBinaries: function() {
+  getMarkers: function() {
     var bin_base = '';
     for (var i = 0; i < this.boxes; i++) {
       bin_base += '0';
@@ -21,7 +22,10 @@ var markers = {
     for (var m = 0; m < this.total; m++) {
       var n = (m).toString(2);
       var bin = bin_base.substr(n.length) + n;
-      bins.push(bin);
+      bins.push({
+        value: m,
+        binary: bin
+      });
     }
     return bins;
   },
@@ -31,7 +35,8 @@ var markers = {
     var markers_counter = 0;
     for (var b = 0; b < this.amount; b++) {
       //reverse binary for counter
-      var current_binary = this.binaries[b].split("").reverse().join("");
+      var current_marker = this.markers[b];
+      var reversed_binary = current_marker.binary.split("").reverse().join("");
       var counter = 0;
       //start marker
       html += '<div  id="marker-' + b + '" class="marker">';
@@ -54,7 +59,7 @@ var markers = {
               }
             } else {
               //message
-              if (current_binary[counter] == '1') {
+              if (reversed_binary[counter] == '1') {
                 html += '<span class="box message black"></span>';
               } else {
                 html += '<span class="box message"></span>';
@@ -67,7 +72,7 @@ var markers = {
           }
         }
       }
-      html += '<label for="marker-' + b + '">' + b + '</label>';
+      html += '<label for="marker-' + current_marker.value + '">' + current_marker.value + '</label>';
       html += '</div>';
       //end marker
 
@@ -75,11 +80,12 @@ var markers = {
       if (markers_counter < 11) {
         markers_counter++;
       } else {
-        html += '<div class="html2pdf__page-break"></div>';
+        //html += '<div class="html2pdf__page-break"></div>';
         markers_counter = 0;
       }
 
     }
+    html+= '<style>.marker .box {width: '+this.box_size+'px; height: '+this.box_size+'px;</style>'
     return html;
   }
 }
@@ -96,6 +102,7 @@ function onSubmit(e) {
 function onSelectChange(e) {
   markers.grid_size = parseInt($grid.value);
   markers.border_size = parseInt($border.value);
+  markers.size = parseInt($size.value);
   markers.setValues();
   var value = $amount.value ? parseInt($amount.value) : 1;
   $amount.innerHTML = '';
@@ -140,6 +147,7 @@ var $form;
 var $grid;
 var $border;
 var $amount;
+var $size;
 var $download;
 
 (function() {
@@ -147,6 +155,7 @@ var $download;
   $grid = document.getElementById('grid');
   $border = document.getElementById('border');
   $amount = document.getElementById('amount');
+  $size = document.getElementById('size');
   $download = document.getElementById('download');
 
   if ($form.attachEvent) {
@@ -158,6 +167,7 @@ var $download;
   $border.onchange = onSelectChange;
   $amount.onchange = onNumberChange;
   $border.onchange = onSelectChange;
+  $size.onchange = onSelectChange;
   $download.onclick = onDownload;
   onSelectChange();
 })();

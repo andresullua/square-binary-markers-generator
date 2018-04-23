@@ -19,15 +19,17 @@
       <label for="grid">Grid Size</label>
       <select id="grid" name="grid">
         <option value="3">3</option>
-        <option value="4">4</option>
+        <option value="4" selected>4</option>
       </select>
       <label for="border">Border Size</label>
       <select id="border" name="border">
         <option value="1">1</option>
-        <option value="2">2</option>
+        <option value="2" selected>2</option>
       </select>
       <label for="amount">Number of Markers</label>
       <select id="amount" name="amount"></select>
+      <label for="size">Size of Markers (px)</label>
+      <input type="number" name="size" id="size" value="80" min="40">
       <br>
       <br>
       <input type="submit" name="" value="Generate">
